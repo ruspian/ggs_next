@@ -1,0 +1,132 @@
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "./src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  Active
+  Inactive
+  Suspended
+}
+
+enum Role {
+  Admin
+  User
+}
+
+enum MemberStatus {
+  Anggota
+  Pendiri
+}
+
+model User {
+  id      String @id @default(cuid()) 
+  name    String
+  email   String @unique
+  password String
+  image  String? 
+  mobile  String? 
+  about String?
+
+  facebook  String?
+  instagram String?
+  twitter   String?
+  linkedin  String?
+  github    String?
+  youtube   String?
+  tiktok    String?
+  whatsapp  String?
+
+  refreshToken      String?   @map("refresh_token")
+  lastLoginDate     DateTime? @map("last_login_date")
+  
+  status            UserStatus @default(Active)
+  
+  forgotPasswordOtp     String?   @map("forgot_password_otp")
+  forgotPasswordExpired DateTime? @map("forgot_password_expired")
+  
+  role              Role     @default(User)
+  statusUser        MemberStatus @default(Anggota) @map("status_user")
+  
+  job               String?
+
+  comments          Comment[]
+
+  likedKegiatan    Kegiatan[] @relation("UserLikes")
+  dislikedKegiatan Kegiatan[] @relation("UserDislikes")
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("users") //  biar nama tabel di DB jadi 'users'
+}
+
+// Model Comment 
+model Comment {
+  id        String   @id @default(cuid())
+  comment   String
+  date      DateTime
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  kegiatanId String
+  kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model kegiatan
+model Kegiatan {
+  id          String   @id @default(cuid())
+  name        String
+  date        DateTime
+  description String  @db.Text 
+  
+  image       String[] 
+
+  likedBy     User[]   @relation("UserLikes")
+  dislikedBy  User[]   @relation("UserDislikes")
+
+  comments    Comment[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("kegiatan") 
+}
+
+// model galeri
+model Galeri {
+  id String @id @default(cuid())
+  image String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model about 
+model About {
+  id        String    @id @default(cuid())
+  
+  about     String    @db.Text 
+  visi      String    @db.Text
+  
+  misi      String[]  
+  
+  logo      String?   
+  tanggal   DateTime? 
+  name      String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("about") 
+}
+
