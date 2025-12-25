@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useId } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,18 +12,116 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useToaster } from "@/providers/ToastProvider";
+import { signIn } from "next-auth/react";
 
 export default function AuthDialog() {
+  const [formData, setFormData] = useState({
+    nama: "",
+    email: "",
+    password: "",
+  });
   const [mode, setMode] = useState("signup");
   const [showPassword, setShowPassword] = useState(false);
-  const id = useId();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMode = () => setMode(mode === "signup" ? "login" : "signup");
+  const router = useRouter();
+  const toaster = useToaster();
+  const toggleMode = () => {
+    setMode(mode === "signup" ? "login" : "signup");
+    setError("");
+  };
+
   const togglePassword = () => setShowPassword(!showPassword);
 
+  const onChangeForm = (name, value) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const payload = {
+      name: formData.nama,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      if (mode === "signup") {
+        const response = await fetch("/api/daftar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError(data.message || "Terjadi Kesalahan!");
+          return;
+        }
+
+        toaster.current.show({
+          title: "Pendaftaran Berhasil!",
+          message: data.message || "Silahkan masuk untuk melanjutkan.",
+          variant: "success",
+          position: "top-right",
+          duration: 5000,
+        });
+        setMode("login");
+      } else {
+        const res = await signIn("credentials", {
+          redirect: false, // Jangan redirect otomatis biar bisa handle error
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (res?.error) {
+          throw new Error("Email atau Password salah!");
+        }
+
+        toaster.current.show({
+          title: "Login Berhasil!",
+          message: "Selamat datang kembali!",
+          variant: "success",
+          position: "top-right",
+          duration: 5000,
+        });
+
+        router.refresh(); // Refresh halaman biar session ke-update
+        setIsOpen(false); // Tutup dialog
+      }
+    } catch (err) {
+      toaster.current.show({
+        title: "Terjadi Kesalahan!",
+        message: err.message || "Coba lagi nanti.",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="rounded-lg">
           Daftar!
@@ -38,22 +136,32 @@ export default function AuthDialog() {
             <DialogDescription className="sm:text-center">
               {mode === "signup"
                 ? "Selamat Datang! Silahkan daftar untuk melanjutkan."
-                : "Masukkan email dan password Anda untuk masuk."}
+                : "Masukkan email dan password anda."}
             </DialogDescription>
           </DialogHeader>
         </div>
 
-        <form className="space-y-4">
+        {/* error */}
+        {error && (
+          <div className="p-3 text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg text-center">
+            {error}
+          </div>
+        )}
+
+        <form className="space-y-4" onSubmit={onSubmitForm}>
           {mode === "signup" && (
             <div className="space-y-4">
               <div className="*:not-first:mt-2">
-                <Label htmlFor={`${id}-name`}>Nama</Label>
+                <Label htmlFor="nama">Nama</Label>
                 <Input
-                  id={`${id}-name`}
+                  id="nama"
+                  onChange={(e) => onChangeForm("nama", e.target.value)}
+                  value={formData.nama}
                   placeholder="Otong Sur"
                   type="text"
                   required
                   className="rounded-lg"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -61,23 +169,29 @@ export default function AuthDialog() {
 
           <div className="space-y-4">
             <div className="*:not-first:mt-2">
-              <Label htmlFor={`${id}-email`}>Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id={`${id}-email`}
+                id="email"
+                onChange={(e) => onChangeForm("email", e.target.value)}
+                value={formData.email}
                 placeholder="otong@email.com"
                 type="email"
                 required
                 className="rounded-lg"
+                disabled={loading}
               />
             </div>
             <div className="relative">
-              <Label htmlFor={`${id}-password`}>Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
-                id={`${id}-password`}
+                id="password"
+                onChange={(e) => onChangeForm("password", e.target.value)}
+                value={formData.password}
                 placeholder="********"
                 type={showPassword ? "text" : "password"}
                 required
                 className="rounded-lg pr-10"
+                disabled={loading}
               />
               <button
                 type="button"
@@ -89,8 +203,21 @@ export default function AuthDialog() {
             </div>
           </div>
 
-          <Button type="button" className="w-full rounded-lg">
-            {mode === "signup" ? "Daftar" : "Masuk"}
+          <Button
+            type="submit"
+            className="w-full rounded-lg"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : mode === "signup" ? (
+              "Daftar Sekarang"
+            ) : (
+              "Masuk"
+            )}
           </Button>
         </form>
 
