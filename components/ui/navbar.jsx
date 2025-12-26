@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/liquid-glass-button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import AuthDialog from "./auth-dialog";
+import { useSession } from "next-auth/react";
 
 const menuItems = [
   { name: "Beranda", href: "/" },
@@ -16,6 +17,12 @@ const menuItems = [
 export const Header = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+
+  const session = useSession();
+  const { status, data } = session;
+
+  console.log("status", status);
+  console.log("data", data);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -106,7 +113,23 @@ export const Header = () => {
               </div>
 
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-2 sm:space-y-0 md:w-fit">
-                <AuthDialog />
+                {data.user?.role === "Admin" && (
+                  <Button size="sm" className="">
+                    <Link href="#">
+                      <span>Admin</span>
+                    </Link>
+                  </Button>
+                )}
+
+                {status === "authenticated" ? (
+                  <Button size="sm" className="" variant="destructive">
+                    <Link href="#">
+                      <span>Keluar</span>
+                    </Link>
+                  </Button>
+                ) : (
+                  <AuthDialog />
+                )}
 
                 <Button
                   asChild
