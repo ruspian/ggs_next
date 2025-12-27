@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { useToaster } from "@/providers/ToastProvider";
 import { signIn } from "next-auth/react";
 
-export default function AuthDialog() {
+export default function AuthDialog({ tampilan, text = "Daftar!" }) {
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
@@ -123,8 +123,8 @@ export default function AuthDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-lg">
-          Daftar!
+        <Button variant="outline" className={`${tampilan} rounded-lg`}>
+          {text}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md rounded-2xl!">

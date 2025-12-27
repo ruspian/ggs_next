@@ -25,12 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="mx-auto max-w-5xl flex justify-center">
+        <div className="mx-auto max-w-screen flex justify-center">
           <AuthProvider>
-            <ToasterProvider>
-              <Header />
-              {children}
-            </ToasterProvider>
+            <ToasterProvider>{children}</ToasterProvider>
           </AuthProvider>
         </div>
       </body>

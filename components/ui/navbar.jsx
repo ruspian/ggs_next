@@ -21,9 +21,6 @@ export const Header = () => {
   const session = useSession();
   const { status, data } = session;
 
-  console.log("status", status);
-  console.log("data", data);
-
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -128,7 +125,7 @@ export const Header = () => {
                     </Link>
                   </Button>
                 ) : (
-                  <AuthDialog />
+                  <AuthDialog tampilan="cursor-pointer" />
                 )}
 
                 <Button
