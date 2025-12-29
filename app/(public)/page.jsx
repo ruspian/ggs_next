@@ -1,6 +1,6 @@
 // import PatnershipComponent from "@/components/PatnershipComponent";
 import AboutComponent from "@/components/AboutComponent";
-// import KegiatanComponent from "@/components/KegiatanComponent";
+import KegiatanComponent from "@/components/KegiatanComponent";
 import BackgroundMotionComponent from "@/components/BackgroundMotionComponent";
 import HeroSection from "@/components/HeroSection";
 import PatnershipComponent from "@/components/PatnershipComponent";
@@ -26,9 +26,9 @@ export default function HomePage() {
 
       <div className="border-t md:mx-20 my-2" />
 
-      {/* <section className="py-16">
+      <section className="py-16">
         <KegiatanComponent />
-      </section> */}
+      </section>
 
       {/* <section className="py-16 bg-slate-50">
         <GaleryComponent />
