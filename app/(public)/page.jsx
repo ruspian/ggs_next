@@ -1,8 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRightCircle } from "lucide-react";
-
 // import PatnershipComponent from "@/components/PatnershipComponent";
-// import AboutComponent from "@/components/AboutComponent";
+import AboutComponent from "@/components/AboutComponent";
 // import KegiatanComponent from "@/components/KegiatanComponent";
 import BackgroundMotionComponent from "@/components/BackgroundMotionComponent";
 import HeroSection from "@/components/HeroSection";
@@ -15,7 +12,6 @@ export default function HomePage() {
   return (
     <main className="relative overflow-hidden w-full">
       <BackgroundMotionComponent />
-      {/* HERO SECTION */}
       <section className="w-full relative min-h-screen px-6 md:px-20 py-24 flex flex-col md:flex-row items-center justify-between overflow-hidden">
         <HeroSection />
       </section>
@@ -24,11 +20,11 @@ export default function HomePage() {
         <PatnershipComponent />
       </section>
 
-      {/* <section className="py-16">
+      <section className="py-16">
         <AboutComponent />
-      </section> */}
+      </section>
 
-      {/* <div className="border-t md:mx-20 my-4" /> */}
+      <div className="border-t md:mx-20 my-2" />
 
       {/* <section className="py-16">
         <KegiatanComponent />

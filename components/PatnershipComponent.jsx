@@ -16,7 +16,7 @@ const PatnershipComponent = () => {
 
         {/* content */}
         <motion.div
-          className="flex items-center sm:my-10 md:my-0 justify-center md:gap-30 gap-4 mt-4 flex-wrap"
+          className="flex items-center sm:my-10 md:my-4 justify-center md:gap-30 gap-4 mt-4 flex-wrap"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
