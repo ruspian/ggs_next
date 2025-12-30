@@ -1,5 +1,7 @@
 import React from "react";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const AnggotaComponent = () => {
   const people = [
@@ -48,9 +50,34 @@ const AnggotaComponent = () => {
   ];
 
   return (
-    <div className="flex flex-row items-center justify-center mb-10 w-full">
-      <AnimatedTooltip items={people} />
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center mb-10 px-4">
+        <h2 className="text-3xl font-bold text-emerald-600 mb-4">
+          Anggota <span className="text-gray-800">Gorontalo Green School</span>
+        </h2>
+        <p className="text-gray-600 text-center max-w-2xl">
+          Tim kami terdiri dari individu-individu berdedikasi yang bersemangat
+          tentang pendidikan berkelanjutan dan pelestarian lingkungan. Kenali
+          lebih dekat dengan anggota-anggota kami yang berkontribusi dalam
+          mewujudkan visi dan misi Gorontalo Green School.
+        </p>
+      </div>
+
+      <div className="flex flex-row items-center justify-center mb-10 w-full">
+        <AnimatedTooltip items={people} />
+      </div>
+
+      <div className="flex flex-col items-center justify-center mb-10 px-4">
+        <Link
+          href="/anggota"
+          className="text-sm text-emerald-600 font-semibold hover:underline"
+        >
+          {" "}
+          Lihat Semua Anggota
+          <ArrowRight className="inline-block ml-2 h-4 w-4" />
+        </Link>
+      </div>
+    </>
   );
 };
 

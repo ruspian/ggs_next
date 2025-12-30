@@ -41,19 +41,6 @@ export default function HomePage() {
       </section>
 
       <section className="py-16">
-        <div className="flex flex-col items-center justify-center mb-10 px-4">
-          <h2 className="text-3xl font-bold text-emerald-600 mb-4">
-            Anggota{" "}
-            <span className="text-gray-800">Gorontalo Green School</span>
-          </h2>
-          <p className="text-gray-600 text-center max-w-2xl">
-            Tim kami terdiri dari individu-individu berdedikasi yang bersemangat
-            tentang pendidikan berkelanjutan dan pelestarian lingkungan. Kenali
-            lebih dekat dengan anggota-anggota kami yang berkontribusi dalam
-            mewujudkan visi dan misi Gorontalo Green School.
-          </p>
-        </div>
-
         <AnggotaComponent />
       </section>
 
