@@ -30,7 +30,7 @@ export const AnimatedTooltip = ({ items, className }) => {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 w-full h-60 justify-center",
+        "flex items-center gap-2 w-full h-30 md:h-60 justify-center",
         className
       )}
     >
@@ -80,7 +80,7 @@ export const AnimatedTooltip = ({ items, className }) => {
             width={400}
             src={item.image}
             alt={item.name}
-            className="object-cover m-0 p-0 object-top rounded-full h-30 w-30 border-2 group-hover:scale-105 group-hover:z-30 border-background relative transition duration-500"
+            className="object-cover m-0 p-0 object-top rounded-full h-15 w-15 md:h-30 md:w-30 border-2 group-hover:scale-105 group-hover:z-30 border-background relative transition duration-500"
           />
         </div>
       ))}

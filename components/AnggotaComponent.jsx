@@ -53,7 +53,7 @@ const AnggotaComponent = () => {
     <>
       <div className="flex flex-col items-center justify-center mb-10 px-4">
         <h2 className="text-3xl font-bold text-emerald-600 mb-4">
-          Anggota <span className="text-gray-800">Gorontalo Green School</span>
+          Anggota <span className="text-gray-800 text-center">Kami</span>
         </h2>
         <p className="text-gray-600 text-center max-w-2xl">
           Tim kami terdiri dari individu-individu berdedikasi yang bersemangat

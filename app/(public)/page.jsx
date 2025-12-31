@@ -5,7 +5,7 @@ import BackgroundMotionComponent from "@/components/BackgroundMotionComponent";
 import HeroSection from "@/components/HeroSection";
 import PatnershipComponent from "@/components/PatnershipComponent";
 import AnggotaComponent from "@/components/AnggotaComponent";
-// import ContactComponent from "@/components/ContactComponent";
+import ContactComponent from "@/components/ContactComponent";
 
 export default function HomePage() {
   return (
@@ -40,13 +40,13 @@ export default function HomePage() {
         <KegiatanComponent />
       </section>
 
-      <section className="py-16">
+      <section className="py-6">
         <AnggotaComponent />
       </section>
 
-      {/* <section className="py-16">
+      <section className="py-6">
         <ContactComponent />
-      </section>  */}
+      </section>
     </main>
   );
 }
