@@ -6,6 +6,8 @@ import HeroSection from "@/components/HeroSection";
 import PatnershipComponent from "@/components/PatnershipComponent";
 import AnggotaComponent from "@/components/AnggotaComponent";
 import ContactComponent from "@/components/ContactComponent";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -38,6 +40,17 @@ export default function HomePage() {
         </div>
 
         <KegiatanComponent />
+
+        <div className="flex flex-col items-center justify-center mt-10 px-4">
+          <Link
+            href="/anggota"
+            className="text-sm text-emerald-600 font-semibold hover:underline"
+          >
+            {" "}
+            Lihat Semua Kegiatan
+            <ArrowRight className="inline-block ml-2 h-4 w-4" />
+          </Link>
+        </div>
       </section>
 
       <section className="py-6">

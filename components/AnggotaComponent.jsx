@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -51,7 +51,7 @@ const AnggotaComponent = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center mb-10 px-4">
+      <div className="flex flex-col items-center justify-center mb-10 px-4 ">
         <h2 className="text-3xl font-bold text-emerald-600 mb-4">
           Anggota <span className="text-gray-800 text-center">Kami</span>
         </h2>
