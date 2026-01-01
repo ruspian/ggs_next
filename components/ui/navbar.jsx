@@ -104,7 +104,7 @@ export const Header = () => {
               </div>
 
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-2 sm:space-y-0 md:w-fit">
-                {data.user?.role === "Admin" && (
+                {data?.user?.role === "Admin" && (
                   <Button size="sm" className="">
                     <Link href="#">
                       <span>Admin</span>
