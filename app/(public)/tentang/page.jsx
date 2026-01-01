@@ -1,5 +1,5 @@
 import React from "react";
-import { Target, Eye, TreePine } from "lucide-react";
+import { Target, TreePine } from "lucide-react";
 
 const AboutPage = () => {
   return (
