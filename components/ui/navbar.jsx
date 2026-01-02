@@ -12,7 +12,6 @@ const menuItems = [
   { name: "Beranda", href: "/" },
   { name: "Tentang", href: "/tentang" },
   { name: "Kegiatan", href: "/kegiatan" },
-  { name: "Kontak", href: "/kontak" },
 ];
 
 export const Header = () => {

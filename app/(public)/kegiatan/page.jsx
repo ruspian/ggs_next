@@ -44,6 +44,9 @@ const KegiatanPage = () => {
         <WorkflowBuilderCard {...cardData} />
         <WorkflowBuilderCard {...cardData} />
         <WorkflowBuilderCard {...cardData} />
+        <WorkflowBuilderCard {...cardData} />
+        <WorkflowBuilderCard {...cardData} />
+        <WorkflowBuilderCard {...cardData} />
       </div>
     </div>
   );
