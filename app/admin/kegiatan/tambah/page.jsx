@@ -65,6 +65,11 @@ export default function TambahKegiatanPage() {
 
             {/* Upload Thumbnail */}
             <div className="group relative h-72 w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center transition-all hover:bg-emerald-50/50 hover:border-emerald-300 cursor-pointer overflow-hidden">
+              <input
+                type="file"
+                accept="image/*"
+                className="absolute z-10 inset-0 opacity-0 cursor-pointer"
+              />
               <div className="p-4 bg-white rounded-2xl shadow-sm text-emerald-600 mb-3 group-hover:scale-110 transition-transform">
                 <ImageIcon size={32} />
               </div>

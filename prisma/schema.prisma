@@ -12,7 +12,6 @@ datasource db {
 enum UserStatus {
   Active
   Inactive
-  Suspended
 }
 
 enum Role {
@@ -23,6 +22,31 @@ enum Role {
 enum MemberStatus {
   Anggota
   Pendiri
+  Relawan
+  Kontributor
+}
+
+enum JenisKelamin {
+  LakiLaki
+  Perempuan
+}
+
+model Jabatan {
+  id        String   @id @default(cuid())
+  nama      String
+  email     String   @unique
+  phone     String?
+  jenisKelamin JenisKelamin @map("jenis_kelamin")
+  alamat    String?
+  image      String?
+  jabatan   String?
+  tanggalBergabung DateTime?
+  status    MemberStatus @default(Anggota)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("jabatan") 
 }
 
 model User {
@@ -103,13 +127,6 @@ model Kegiatan {
   @@map("kegiatan") 
 }
 
-// model galeri
-model Galeri {
-  id String @id @default(cuid())
-  image String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
 
 // model about 
 model About {
