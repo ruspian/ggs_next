@@ -39,9 +39,9 @@ model Jabatan {
   jenisKelamin JenisKelamin @map("jenis_kelamin")
   alamat    String?
   image      String?
-  jabatan   String?
+  jabatan   MemberStatus @default(Anggota)
   tanggalBergabung DateTime?
-  status    MemberStatus @default(Anggota)
+  status    UserStatus @default(Active)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -18,6 +18,7 @@ import Link from "next/link";
 import { uploadToCloudinarySigned } from "@/lib/cloudinaryFunc";
 import { useToaster } from "@/providers/ToastProvider";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const TambahAnggotaClient = () => {
   const [formData, setFormData] = useState({
@@ -32,8 +33,10 @@ const TambahAnggotaClient = () => {
     status: "Aktif",
   });
   const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toast = useToaster();
+  const router = useRouter();
 
   const handleInputChange = (name, value) => {
     setFormData((prev) => {
@@ -94,7 +97,7 @@ const TambahAnggotaClient = () => {
     }
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     if (!formData.nama || !formData.email) {
@@ -102,10 +105,48 @@ const TambahAnggotaClient = () => {
         title: "Peringatan",
         message: "Nama dan Email wajib diisi!",
         variant: "error",
+        position: "top-right",
+        duration: 5000,
       });
     }
 
-    console.log("Form Data Submitted: ", formData);
+    try {
+      setIsSubmitting(true);
+
+      const response = await fetch("/api/anggota", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const err = response.json();
+        throw new Error(err.message || "Gagal menyimpan data anggota!");
+      }
+
+      toast.current.show({
+        title: "Sukses!",
+        message: "Data anggota berhasil disimpan!",
+        variant: "success",
+        position: "top-right",
+        duration: 5000,
+      });
+
+      // redirect ke halaman anggota
+      router.push("/admin/anggota");
+    } catch (error) {
+      toast.current.show({
+        title: "Error!",
+        message: error.message || "Gagal menyimpan data anggota!",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -293,10 +334,10 @@ const TambahAnggotaClient = () => {
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none cursor-pointer"
                 >
                   <option value="">Pilih Jabatan</option>
+                  <option value="Pendiri">Pendiri</option>
+                  <option value="Anggota">Anggota</option>
                   <option value="Relawan">Relawan</option>
-                  <option value="Anggota">Anggota Tetap</option>
-                  <option value="Koordinator">Koordinator Lapangan</option>
-                  <option value="Pengurus">Pengurus Inti</option>
+                  <option value="Kontributor">Kontributor</option>
                 </select>
               </div>
 
@@ -325,7 +366,7 @@ const TambahAnggotaClient = () => {
                   Status Keanggotaan
                 </label>
                 <div className="flex items-center gap-4 py-2">
-                  {["Aktif", "Pending"].map((status) => (
+                  {["Active", "Inactive"].map((status) => (
                     <label
                       key={status}
                       className="flex items-center gap-2 cursor-pointer group"
@@ -341,7 +382,7 @@ const TambahAnggotaClient = () => {
                         className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
                       />
                       <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
-                        {status}
+                        {status === "Active" ? "Aktif" : "Tidak Aktif"}
                       </span>
                     </label>
                   ))}
@@ -366,9 +407,19 @@ const TambahAnggotaClient = () => {
               <button
                 type="submit"
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3 bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/20 hover:bg-emerald-700 active:scale-95 transition-all"
+                disabled={isSubmitting}
               >
-                <Save size={18} />
-                Simpan Anggota
+                {isSubmitting ? (
+                  <span className="flex-1 md:flex-none flex items-center justify-center gap-2">
+                    <Loader2 className="animate-spin" size={16} />
+                    Loading...
+                  </span>
+                ) : (
+                  <span className="flex-1 md:flex-none flex items-center justify-center gap-2">
+                    <Save size={18} />
+                    Simpan Data
+                  </span>
+                )}
               </button>
             </div>
           </div>
