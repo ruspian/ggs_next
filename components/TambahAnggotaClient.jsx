@@ -30,7 +30,7 @@ const TambahAnggotaClient = () => {
     image: "",
     jabatan: "",
     tanggalBergabung: "",
-    status: "Aktif",
+    status: "Active",
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
