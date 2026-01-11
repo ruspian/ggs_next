@@ -23,18 +23,19 @@ import {
 import { useToaster } from "@/providers/ToastProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { formatTanggalEditInput } from "@/lib/formatTanggal";
 
-const TambahAnggotaClient = () => {
+const EditAnggotaClient = ({ anggota }) => {
   const [formData, setFormData] = useState({
-    nama: "",
-    email: "",
-    phone: "",
-    jenisKelamin: "",
-    alamat: "",
-    image: "",
-    jabatan: "",
-    tanggalBergabung: "",
-    status: "Active",
+    nama: anggota?.nama,
+    email: anggota?.email,
+    phone: anggota?.phone,
+    jenisKelamin: anggota?.jenisKelamin,
+    alamat: anggota?.alamat,
+    image: anggota?.image,
+    jabatan: anggota?.jabatan,
+    tanggalBergabung: formatTanggalEditInput(anggota?.tanggalBergabung),
+    status: anggota?.status,
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,6 +43,7 @@ const TambahAnggotaClient = () => {
 
   const toast = useToaster();
   const router = useRouter();
+  const toaster = useToaster();
 
   const handleInputChange = (name, value) => {
     setFormData((prev) => {
@@ -107,28 +109,23 @@ const TambahAnggotaClient = () => {
 
     setIsImageDeleting(true);
 
-    try {
-      const success = await deleteFromCloudinary(formData.image, "image");
+    const success = await deleteFromCloudinary(formData.image, "image");
 
-      if (success) {
-        setFormData((prev) => ({
-          ...prev,
-          image: "",
-        }));
-      } else {
-        throw new Error("Gagal menghapus gambar!");
-      }
-    } catch (error) {
-      toast.current.show({
+    if (success) {
+      setFormData((prev) => ({
+        ...prev,
+        image: "",
+      }));
+    } else {
+      toaster.current.show({
         title: "Error!",
-        message: error.message || "Gagal menghapus gambar!",
+        message: "Gagal menghapus gambar!",
         variant: "error",
         position: "top-right",
         duration: 5000,
       });
-    } finally {
-      setIsImageDeleting(false);
     }
+    setIsImageDeleting(false);
   };
 
   const onSubmit = async (event) => {
@@ -147,12 +144,15 @@ const TambahAnggotaClient = () => {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch("/api/anggota", {
-        method: "POST",
+      const response = await fetch(`/api/anggota/${anggota.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          tanggalBergabung: anggota.tanggalBergabung,
+        }),
       });
 
       if (!response.ok) {
@@ -465,7 +465,7 @@ const TambahAnggotaClient = () => {
                 ) : (
                   <span className="flex-1 md:flex-none flex items-center justify-center gap-2">
                     <Save size={18} />
-                    Simpan Data
+                    Perbarui data
                   </span>
                 )}
               </button>
@@ -477,4 +477,4 @@ const TambahAnggotaClient = () => {
   );
 };
 
-export default TambahAnggotaClient;
+export default EditAnggotaClient;

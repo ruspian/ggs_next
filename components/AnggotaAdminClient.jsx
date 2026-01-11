@@ -180,12 +180,14 @@ const AnggotaAdminClient = ({ members, pagination }) => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-2">
-                      <button
-                        className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                        title="Edit"
-                      >
-                        <Edit2 size={18} />
-                      </button>
+                      <Link href={`/admin/anggota/edit/${member.id}`}>
+                        <button
+                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                          title="Edit"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                      </Link>
                       <button
                         className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                         title="Hapus"

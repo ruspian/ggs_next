@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import AnggotaAdminClient from "@/components/AnggotaAdminClient";
 import { prisma } from "@/lib/prisma";
 
