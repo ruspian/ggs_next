@@ -1,5 +1,9 @@
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 
+export const metadata = {
+  title: "GGS Admin",
+  description: "Halaman Admin GGS",
+};
 export default function AdminLayout({ children }) {
   return (
     <div className="h-screen min-w-screen bg-gray-50 font-sans flex flex-col md:flex-row">

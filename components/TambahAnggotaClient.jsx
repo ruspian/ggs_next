@@ -43,6 +43,7 @@ const TambahAnggotaClient = () => {
   const toast = useToaster();
   const router = useRouter();
 
+  // fungsi untuk menghandle perubahan inputan user
   const handleInputChange = (name, value) => {
     setFormData((prev) => {
       return {
@@ -52,6 +53,7 @@ const TambahAnggotaClient = () => {
     });
   };
 
+  // fungsi untuk menghandle upload gambar ke cloudinari
   const handleUploadImage = async (event) => {
     // ambil file yang diupload
     const file = event.target.files[0];
@@ -102,6 +104,7 @@ const TambahAnggotaClient = () => {
     }
   };
 
+  // fungsi untuk menghandle hapus gambar dari cloudinary
   const handleDeleteImage = async () => {
     if (!formData.image) return;
 
@@ -131,6 +134,7 @@ const TambahAnggotaClient = () => {
     }
   };
 
+  // fungsi untuk menghadle
   const onSubmit = async (event) => {
     event.preventDefault();
 

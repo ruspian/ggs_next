@@ -107,14 +107,24 @@ model Comment {
   updatedAt DateTime @updatedAt
 }
 
+enum KategoriPost {
+  Konservasi
+  Edukasi
+  Komunitas
+  Aksi
+}
+
 // model kegiatan
 model Kegiatan {
   id          String   @id @default(cuid())
-  name        String
+  title       String
   date        DateTime
-  description String  @db.Text 
+  content     String  @db.Text 
   
-  image       String[] 
+  image       String?
+  lokasi      String? 
+  kategori    KategoriPost
+  author      String?
 
   likedBy     User[]   @relation("UserLikes")
   dislikedBy  User[]   @relation("UserDislikes")
