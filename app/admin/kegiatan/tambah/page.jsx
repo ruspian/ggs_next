@@ -12,6 +12,7 @@ import {
   FileText,
   Trash2,
   Loader2,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import TiptapEditor from "@/components/TiptapEditor";
@@ -23,6 +24,7 @@ import { useToaster } from "@/providers/ToastProvider";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { PratinjauKegiatan } from "@/components/PratinjauKegiatan";
 
 export default function TambahKegiatanPage() {
   const [formData, setFormData] = useState({
@@ -32,9 +34,11 @@ export default function TambahKegiatanPage() {
     location: "",
     category: "",
     image: "",
+    status: "",
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isImageDeleting, setIsImageDeleting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toast = useToaster();
   const router = useRouter();
@@ -140,7 +144,48 @@ export default function TambahKegiatanPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("formData", formData);
+    if (!formData.title) {
+      return toast.current.show({
+        title: "Peringatan",
+        message: "Judul wajib diisi!",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+    }
+
+    try {
+      const response = await fetch("/api/kegiatan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || "Gagal menyimpan data kegiatan!");
+      }
+
+      toast.current.show({
+        title: "Berhasil!",
+        message: "Data kegiatan berhasil disimpan!",
+        variant: "success",
+        position: "top-right",
+        duration: 5000,
+      });
+
+      router.push("/admin/kegiatan");
+    } catch (error) {
+      toast.current.show({
+        title: "Gagal!",
+        message: error.message || "Gagal menyimpan data kegiatan!",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+    }
   };
 
   return (
@@ -164,7 +209,10 @@ export default function TambahKegiatanPage() {
           </div>
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 text-slate-600 font-bold text-sm hover:bg-slate-100 rounded-xl transition-all">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 text-slate-600 font-bold text-sm hover:bg-slate-100 rounded-xl transition-all"
+          >
             <Eye size={18} /> Pratinjau
           </button>
           <button
@@ -176,6 +224,14 @@ export default function TambahKegiatanPage() {
           </button>
         </div>
       </div>
+
+      {isOpen && (
+        <PratinjauKegiatan
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          data={formData}
+        />
+      )}
       <form
         id="form-kegiatan"
         onSubmit={handleSubmit}
@@ -327,9 +383,35 @@ export default function TambahKegiatanPage() {
                       name="category"
                       className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none cursor-pointer appearance-none"
                     >
+                      <option value="">Pilih Kategori</option>
                       <option value="Konservasi">Konservasi</option>
                       <option value="Edukasi">Edukasi</option>
-                      <option value="Aksi Sosial">Aksi Sosial</option>
+                      <option value="Aksi">Aksi Sosial</option>
+                      <option value="Komunitas">Komunitas</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 uppercase">
+                    Status Publikasi
+                  </label>
+                  <div className="relative">
+                    <Globe
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                      size={16}
+                    />
+                    <select
+                      value={formData.status}
+                      onChange={(e) =>
+                        handleInputChange("status", e.target.value)
+                      }
+                      name="status"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none cursor-pointer appearance-none"
+                    >
+                      <option value="">Pilih</option>
+                      <option value="Published">Published</option>
+                      <option value="Draft">Draft</option>
                     </select>
                   </div>
                 </div>

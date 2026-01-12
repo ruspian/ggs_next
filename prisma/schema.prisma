@@ -114,6 +114,11 @@ enum KategoriPost {
   Aksi
 }
 
+enum StatusPost {
+  Published
+  Draft
+}
+
 // model kegiatan
 model Kegiatan {
   id          String   @id @default(cuid())
@@ -125,9 +130,12 @@ model Kegiatan {
   lokasi      String? 
   kategori    KategoriPost
   author      String?
+  statusPublish      StatusPost @default(Draft)
 
   likedBy     User[]   @relation("UserLikes")
   dislikedBy  User[]   @relation("UserDislikes")
+  views       Int       @default(0)
+  viewLogs       PostView[]
 
   comments    Comment[]
 
@@ -135,6 +143,16 @@ model Kegiatan {
   updatedAt   DateTime @updatedAt
 
   @@map("kegiatan") 
+}
+
+model PostView {
+  id      String @id @default(cuid())
+  postId  String
+  userId  String
+  kegiatan    Kegiatan   @relation(fields: [postId], references: [id])
+
+  // constraint gabungan unik
+  @@unique([postId, userId])
 }
 
 

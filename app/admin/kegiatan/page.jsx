@@ -1,35 +1,19 @@
 import KegiatanAdminClient from "@/components/KegiatanAdminClient";
+import { formatDateToDisplayID } from "@/lib/formatTanggal";
+import { prisma } from "@/lib/prisma";
 
-export default function BeritaKegiatanAdmin() {
-  const posts = [
-    {
-      id: 1,
-      title: "Sukses! GGS Tanam 1000 Mangrove di Pesisir Torosiaje",
-      date: "02 Jan 2026",
-      author: "Admin",
-      views: "1.2k",
-      status: "Published",
-      category: "Konservasi",
-    },
-    {
-      id: 2,
-      title: "Edukasi Limbah Plastik di SMP Negeri 1 Limboto",
-      date: "28 Des 2025",
-      author: "Relawan A",
-      views: "850",
-      status: "Published",
-      category: "Edukasi",
-    },
-    {
-      id: 3,
-      title: "Rencana Aksi Bersih Pantai Pohuwato (Draft)",
-      date: "04 Jan 2026",
-      author: "Admin",
-      views: "0",
-      status: "Draft",
-      category: "Aksi",
-    },
-  ];
+export default async function BeritaKegiatanAdmin() {
+  const kegiatan = await prisma.kegiatan.findMany();
 
-  return <KegiatanAdminClient posts={posts} />;
+  const formatKegiatan = kegiatan.map((keg) => ({
+    id: keg.id,
+    title: keg.title,
+    date: formatDateToDisplayID(keg.date),
+    author: keg.author,
+    views: keg.views,
+    status: keg.status || "Draft",
+    category: keg.kategori,
+  }));
+
+  return <KegiatanAdminClient posts={formatKegiatan} />;
 }
