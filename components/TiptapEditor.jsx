@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Bold, Italic, List, ListOrdered, Quote, Heading2 } from "lucide-react";
+import { useEffect } from "react";
 
 const MenuBar = ({ editor }) => {
   if (!editor) return null;
@@ -62,7 +63,7 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export default function TiptapEditor({ onChange }) {
+export default function TiptapEditor({ onChange, content }) {
   const editor = useEditor({
     extensions: [StarterKit],
     immediatelyRender: false,
@@ -78,6 +79,15 @@ export default function TiptapEditor({ onChange }) {
     },
   });
 
+  // singkron konten jika ada perubahan
+  useEffect(() => {
+    if (editor && content !== undefined && content !== editor.getHTML()) {
+      // Gunakan requestAnimationFrame agar tidak bentrok dengan siklus render React
+      window.requestAnimationFrame(() => {
+        editor.commands.setContent(content);
+      });
+    }
+  }, [content, editor]);
   return (
     <div className="w-full">
       <MenuBar editor={editor} />

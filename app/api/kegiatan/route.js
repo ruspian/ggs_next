@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
 
 export const POST = async (req) => {
   const session = await auth();
@@ -12,6 +13,8 @@ export const POST = async (req) => {
     const body = await req.json();
     const { title, content, date, location, category, image, status } = body;
 
+    const cleanContent = sanitizeHtml(content);
+
     if (!title) {
       return NextResponse.json(
         { message: "Judul wajib diisi!" },
@@ -22,7 +25,7 @@ export const POST = async (req) => {
     const newKegiatan = await prisma.kegiatan.create({
       data: {
         title,
-        content,
+        content: cleanContent,
         date: new Date(date),
         lokasi: location,
         kategori: category,

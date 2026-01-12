@@ -185,17 +185,11 @@ const KegiatanAdminClient = ({
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex justify-center gap-4 text-slate-400">
-                        <div className="flex flex-col items-center">
+                        <div className="flex items-center gap-2">
+                          <Eye size={14} />
                           <span className="text-xs font-bold text-slate-700">
                             {post.views}
                           </span>
-                          <Eye size={14} />
-                        </div>
-                        <div className="flex flex-col items-center">
-                          <span className="text-xs font-bold text-slate-700">
-                            12
-                          </span>
-                          <MessageSquare size={14} />
                         </div>
                       </div>
                     </td>
@@ -207,12 +201,14 @@ const KegiatanAdminClient = ({
                         >
                           <Eye size={18} />
                         </button>
-                        <button
-                          className="p-2 text-slate-400 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
-                          title="Edit"
-                        >
-                          <Edit3 size={18} />
-                        </button>
+                        <Link href={`/admin/kegiatan/edit/${post.id}`}>
+                          <button
+                            className="p-2 text-slate-400 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                            title="Edit"
+                          >
+                            <Edit3 size={18} />
+                          </button>
+                        </Link>
                         <button
                           className="p-2 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
                           title="Hapus"

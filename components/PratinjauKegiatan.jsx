@@ -1,9 +1,11 @@
-// Components/PreviewKegiatan.js (atau taruh di file yang sama)
+import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
 import { X } from "lucide-react";
 import Image from "next/image";
 
 export const PratinjauKegiatan = ({ isOpen, onClose, data }) => {
   if (!isOpen) return null;
+
+  const cleanContent = sanitizeHtml(data.content);
 
   return (
     <div className="fixed inset-0 z-100 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8">
@@ -49,7 +51,7 @@ export const PratinjauKegiatan = ({ isOpen, onClose, data }) => {
             className="prose prose-slate prose-lg max-w-3xl mx-auto"
             dangerouslySetInnerHTML={{
               __html:
-                data.content ||
+                cleanContent ||
                 "<p className='text-slate-400 italic'>Belum ada isi berita...</p>",
             }}
           />
