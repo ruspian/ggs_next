@@ -156,8 +156,8 @@ export default function EditKegiatanClient({ kegiatan }) {
     }
 
     try {
-      const response = await fetch("/api/kegiatan", {
-        method: "POST",
+      const response = await fetch(`/api/kegiatan/${kegiatan.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -256,7 +256,7 @@ export default function EditKegiatanClient({ kegiatan }) {
                 />
               </div>
 
-              {/* Upload Thumbnail */}
+              {/* Upload gambar */}
               <div className="group relative h-72 w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center transition-all hover:bg-emerald-50/50 hover:border-emerald-300 cursor-pointer overflow-hidden">
                 {formData.image ? (
                   <>
@@ -318,7 +318,7 @@ export default function EditKegiatanClient({ kegiatan }) {
             </div>
           </div>
 
-          {/* KOLOM KANAN: METADATA */}
+          {/*  METADATA */}
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-6 sticky top-6">
               <div className="flex items-center gap-2 border-b border-slate-50 pb-4">

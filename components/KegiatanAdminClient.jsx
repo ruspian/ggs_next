@@ -15,6 +15,8 @@ import Link from "next/link";
 import { formatSingkatNomer } from "@/lib/formatNumber";
 import { useDebounce } from "use-debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import ConfirmModal from "./ConfirmModal";
+import { useToaster } from "@/providers/ToastProvider";
 
 const KegiatanAdminClient = ({
   posts,
@@ -25,10 +27,14 @@ const KegiatanAdminClient = ({
 }) => {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const toast = useToaster();
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -53,6 +59,46 @@ const KegiatanAdminClient = ({
     params.set("page", newPage.toString());
 
     router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/kegiatan/${deleteId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || "Gagal menghapus data kegiatan!");
+      }
+
+      toast.current.show({
+        title: "Berhasil!",
+        message: "Data kegiatan berhasil dihapus!",
+        variant: "success",
+        position: "top-right",
+        duration: 5000,
+      });
+
+      setIsDeleteOpen(false);
+      setDeleteId(null);
+      router.refresh();
+    } catch (error) {
+      toast.current.show({
+        title: "Gagal!",
+        message: error.message || "Gagal menghapus data kegiatan!",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const onDeleteClick = (id) => {
+    setDeleteId(id);
+    setIsDeleteOpen(true);
   };
 
   return (
@@ -212,6 +258,7 @@ const KegiatanAdminClient = ({
                         <button
                           className="p-2 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
                           title="Hapus"
+                          onClick={() => onDeleteClick(post.id)}
                         >
                           <Trash2 size={18} />
                         </button>
@@ -250,6 +297,15 @@ const KegiatanAdminClient = ({
             </button>
           </div>
         </div>
+
+        <ConfirmModal
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+          onConfirm={handleDelete}
+          isLoading={isDeleting}
+          title="Hapus Kegiatan?"
+          message="Kegiatan yang dihapus tidak dapat dikembalikan lagi. Pastikan data sudah benar."
+        />
       </div>
     </div>
   );

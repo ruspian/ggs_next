@@ -8,7 +8,7 @@ export const PratinjauKegiatan = ({ isOpen, onClose, data }) => {
   const cleanContent = sanitizeHtml(data.content);
 
   return (
-    <div className="fixed inset-0 z-100 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8">
+    <div className="fixed h-screen inset-0 z-100 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8">
       <div className="bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[40px] shadow-2xl relative">
         {/* Close Button */}
         <button
