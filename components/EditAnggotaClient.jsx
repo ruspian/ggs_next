@@ -24,6 +24,7 @@ import { useToaster } from "@/providers/ToastProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { formatTanggalEditInput } from "@/lib/formatTanggal";
+import { UpdateAnggota } from "@/lib/action";
 
 const EditAnggotaClient = ({ anggota }) => {
   const [formData, setFormData] = useState({
@@ -144,25 +145,15 @@ const EditAnggotaClient = ({ anggota }) => {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch(`/api/anggota/${anggota.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          tanggalBergabung: anggota.tanggalBergabung,
-        }),
-      });
+      const result = await UpdateAnggota(anggota.id, formData);
 
-      if (!response.ok) {
-        const err = response.json();
-        throw new Error(err.message || "Gagal menyimpan data anggota!");
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
       toast.current.show({
         title: "Sukses!",
-        message: "Data anggota berhasil disimpan!",
+        message: result.message || "Data anggota berhasil disimpan!",
         variant: "success",
         position: "top-right",
         duration: 5000,

@@ -23,6 +23,7 @@ import {
 import { useToaster } from "@/providers/ToastProvider";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { PostAnggota } from "@/lib/action";
 
 const TambahAnggotaClient = () => {
   const [formData, setFormData] = useState({
@@ -151,17 +152,10 @@ const TambahAnggotaClient = () => {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch("/api/anggota", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await PostAnggota(formData);
 
-      if (!response.ok) {
-        const err = response.json();
-        throw new Error(err.message || "Gagal menyimpan data anggota!");
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
       toast.current.show({

@@ -17,6 +17,7 @@ import { useDebounce } from "use-debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ConfirmModal from "./ConfirmModal";
 import { useToaster } from "@/providers/ToastProvider";
+import { DeleteKegiatan } from "@/lib/action";
 
 const KegiatanAdminClient = ({
   posts,
@@ -63,13 +64,10 @@ const KegiatanAdminClient = ({
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/kegiatan/${deleteId}`, {
-        method: "DELETE",
-      });
+      const result = await DeleteKegiatan(deleteId);
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Gagal menghapus data kegiatan!");
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
       toast.current.show({

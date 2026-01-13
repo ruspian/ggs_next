@@ -16,15 +16,22 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useDebounce } from "use-debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { DeleteAnggota } from "@/lib/action";
+import { useToaster } from "@/providers/ToastProvider";
+import ConfirmModal from "./ConfirmModal";
 
 const AnggotaAdminClient = ({ members, pagination }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch] = useDebounce(searchTerm, 300);
   const [isPending, startTransition] = useTransition();
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const toast = useToaster();
 
   useEffect(() => {
     // perbarui URL saat debouncedSearch berubah
@@ -61,6 +68,45 @@ const AnggotaAdminClient = ({ members, pagination }) => {
 
     // perbarui URL
     router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const onDeleteClick = (id) => {
+    setDeleteId(id);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+
+      const result = await DeleteAnggota(deleteId);
+
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+
+      toast.current.show({
+        title: "Berhasil!",
+        message: result.message || "Data anggota berhasil dihapus!",
+        variant: "success",
+        position: "top-right",
+        duration: 5000,
+      });
+
+      setIsDeleteOpen(false);
+      setDeleteId(null);
+      router.refresh();
+    } catch (error) {
+      toast.current.show({
+        title: "Gagal!",
+        message: error.message || "Gagal menghapus data anggota!",
+        variant: "error",
+        position: "top-right",
+        duration: 5000,
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -191,6 +237,7 @@ const AnggotaAdminClient = ({ members, pagination }) => {
                       <button
                         className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                         title="Hapus"
+                        onClick={() => onDeleteClick(member.id)}
                       >
                         <Trash2 size={18} />
                       </button>
@@ -201,6 +248,15 @@ const AnggotaAdminClient = ({ members, pagination }) => {
             </tbody>
           </table>
         </div>
+
+        <ConfirmModal
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+          onConfirm={handleDelete}
+          isLoading={isDeleting}
+          title="Hapus Anggota?"
+          message="Anggota yang dihapus tidak dapat dikembalikan lagi. Pastikan data sudah benar."
+        />
 
         {/* Pagination Dummy */}
         <div className="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
