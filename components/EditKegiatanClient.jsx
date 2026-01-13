@@ -26,6 +26,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { PratinjauKegiatan } from "@/components/PratinjauKegiatan";
 import { formatTanggalEditInput } from "@/lib/formatTanggal";
+import { UpdateKegiatan } from "@/lib/action";
 
 export default function EditKegiatanClient({ kegiatan }) {
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export default function EditKegiatanClient({ kegiatan }) {
   const [isUploading, setIsUploading] = useState(false);
   const [isImageDeleting, setIsImageDeleting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toast = useToaster();
   const router = useRouter();
@@ -156,17 +158,11 @@ export default function EditKegiatanClient({ kegiatan }) {
     }
 
     try {
-      const response = await fetch(`/api/kegiatan/${kegiatan.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      setIsSubmitting(true);
+      const result = await UpdateKegiatan(kegiatan.id, formData);
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Gagal menyimpan data kegiatan!");
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
       toast.current.show({
@@ -186,6 +182,8 @@ export default function EditKegiatanClient({ kegiatan }) {
         position: "top-right",
         duration: 5000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -219,9 +217,20 @@ export default function EditKegiatanClient({ kegiatan }) {
           <button
             type="submit"
             form="form-kegiatan"
-            className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/20 hover:bg-emerald-700 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/20 hover:bg-emerald-700 active:scale-95 transition-all disabled:bg-emerald-400/50 disabled:shadow-none disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           >
-            <Save size={18} /> Publish Berita
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="animate-spin" size={16} />
+                <span>Tunggu...</span>
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <Save size={16} />
+                Publish Kegiatan
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -422,9 +431,20 @@ export default function EditKegiatanClient({ kegiatan }) {
               <div className="pt-4 space-y-3">
                 <Button
                   type="submit"
-                  className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors md:hidden"
+                  className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors md:hidden disabled:bg-emerald-400/50 disabled:shadow-none disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
                 >
-                  Publish Sekarang
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="animate-spin" size={16} />
+                      <span>Tunggu...</span>
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      <Save size={16} />
+                      Publish Kegiatan
+                    </span>
+                  )}
                 </Button>
                 <p className="text-[10px] text-slate-400 text-center italic">
                   Draft akan tersimpan otomatis secara lokal.

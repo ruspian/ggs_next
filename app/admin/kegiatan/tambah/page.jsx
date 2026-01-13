@@ -227,7 +227,7 @@ export default function TambahKegiatanPage() {
             ) : (
               <span className="flex items-center justify-center gap-2">
                 <Save size={16} />
-                Simpan
+                Publish Kegiatan
               </span>
             )}
           </button>
