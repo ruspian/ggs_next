@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { PratinjauKegiatan } from "@/components/PratinjauKegiatan";
+import { PostKegiatan } from "@/lib/action";
 
 export default function TambahKegiatanPage() {
   const [formData, setFormData] = useState({
@@ -39,6 +40,7 @@ export default function TambahKegiatanPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isImageDeleting, setIsImageDeleting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState(false);
 
   const toast = useToaster();
   const router = useRouter();
@@ -155,17 +157,11 @@ export default function TambahKegiatanPage() {
     }
 
     try {
-      const response = await fetch("/api/kegiatan", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      setIsSubmiting(true);
+      const result = await PostKegiatan(formData);
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Gagal menyimpan data kegiatan!");
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
       toast.current.show({
@@ -185,6 +181,8 @@ export default function TambahKegiatanPage() {
         position: "top-right",
         duration: 5000,
       });
+    } finally {
+      setIsSubmiting(false);
     }
   };
 
@@ -218,9 +216,20 @@ export default function TambahKegiatanPage() {
           <button
             type="submit"
             form="form-kegiatan"
-            className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/20 hover:bg-emerald-700 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/20 hover:bg-emerald-700 active:scale-95 transition-all disabled:bg-emerald-400/50 disabled:shadow-none disabled:cursor-not-allowed"
+            disabled={isSubmiting}
           >
-            <Save size={18} /> Publish Berita
+            {isSubmiting ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="animate-spin" size={16} />
+                <span>Tunggu...</span>
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <Save size={16} />
+                Simpan
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -420,9 +429,17 @@ export default function TambahKegiatanPage() {
               <div className="pt-4 space-y-3">
                 <Button
                   type="submit"
-                  className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors md:hidden"
+                  className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors md:hidden disabled:bg-slate-900/50 disabled:cursor-not-allowed"
+                  disabled={isSubmiting}
                 >
-                  Publish Sekarang
+                  {isSubmiting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="animate-spin" size={16} />
+                      <span>Tunggu...</span>
+                    </span>
+                  ) : (
+                    "Publish Sekarang"
+                  )}
                 </Button>
                 <p className="text-[10px] text-slate-400 text-center italic">
                   Draft akan tersimpan otomatis secara lokal.
