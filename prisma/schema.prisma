@@ -43,6 +43,9 @@ model Jabatan {
   tanggalBergabung DateTime?
   status    UserStatus @default(Active)
 
+  userId    String?  @unique
+  user      User?    @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -69,6 +72,8 @@ model User {
 
   refreshToken      String?   @map("refresh_token")
   lastLoginDate     DateTime? @map("last_login_date")
+
+  anggotaProfile Jabatan?
   
   status            UserStatus @default(Active)
   
@@ -79,6 +84,8 @@ model User {
   statusUser        MemberStatus @default(Anggota) @map("status_user")
   
   job               String?
+
+  
 
   comments          Comment[]
 

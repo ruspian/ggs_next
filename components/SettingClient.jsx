@@ -14,7 +14,7 @@ const SettingClient = ({ admins, profil }) => {
     { id: "umum", label: "Profil Organisasi", icon: <Globe size={18} /> },
     {
       id: "users",
-      label: "Pengelola Dashboard",
+      label: "Pengelola User",
       icon: <UserCog size={18} />,
     },
     { id: "akun", label: "Keamanan Akun", icon: <Lock size={18} /> },

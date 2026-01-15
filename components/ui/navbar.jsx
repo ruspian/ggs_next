@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import AuthDialog from "./auth-dialog";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 const menuItems = [
   { name: "Beranda", href: "/" },
@@ -112,10 +113,13 @@ export const Header = () => {
                 )}
 
                 {status === "authenticated" ? (
-                  <Button size="sm" className="" variant="destructive">
-                    <Link href="#">
-                      <span>Keluar</span>
-                    </Link>
+                  <Button
+                    size="sm"
+                    className=""
+                    variant="destructive"
+                    onClick={() => signOut()}
+                  >
+                    <span>Keluar</span>
                   </Button>
                 ) : (
                   <AuthDialog tampilan="cursor-pointer" />

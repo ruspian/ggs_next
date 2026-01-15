@@ -5,23 +5,14 @@ export default async function SettingsPage() {
   // data profil organisasi
   const profilOrganisasi = await prisma.about.findFirst();
 
-  console.log("profil organisasi:", profilOrganisasi);
-
-  // Data dummy user yang punya akses admin
-  const admins = [
-    {
-      id: 1,
-      name: "Admin Utama GGS",
-      email: "admin@ggs.org",
-      role: "Super Admin",
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
     },
-    {
-      id: 2,
-      name: "Arif Rahmansyah",
-      email: "arif.editor@ggs.org",
-      role: "Editor",
-    },
-  ];
+  });
 
-  return <SettingClient admins={admins} profil={profilOrganisasi} />;
+  return <SettingClient profil={profilOrganisasi} admins={users} />;
 }

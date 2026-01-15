@@ -1,7 +1,44 @@
-import { Plus, ShieldAlert, Trash2 } from "lucide-react";
-import React from "react";
+import { UpdatePengelola } from "@/lib/action";
+import { useToaster } from "@/providers/ToastProvider";
+import { Plus, Save, ShieldAlert, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const SettingKelolaUser = ({ admins }) => {
+  const [formData, setFormData] = useState({
+    id: "",
+    role: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const toast = useToaster();
+  const router = useRouter();
+
+  const handleRoleChange = async (id, newRole) => {
+    try {
+      setIsSubmitting(true);
+      const result = await UpdatePengelola({ id, role: newRole });
+
+      if (!result.success) throw new Error(result.message);
+
+      toast.current.show({
+        title: "Berhasil!",
+        message: result.message,
+        variant: "success",
+      });
+
+      router.refresh();
+    } catch (error) {
+      toast.current.show({
+        title: "Gagal",
+        message: error.message,
+        variant: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="p-8 space-y-6 animate-in slide-in-from-bottom-2 duration-300">
       <div className="flex justify-between items-center">
@@ -15,7 +52,6 @@ const SettingKelolaUser = ({ admins }) => {
           <Plus size={14} /> Tambah Admin
         </button>
       </div>
-
       <div className="space-y-3">
         {admins.map((adm) => (
           <div
@@ -35,12 +71,14 @@ const SettingKelolaUser = ({ admins }) => {
             </div>
 
             <div className="flex items-center gap-3">
-              <select className="bg-white border border-slate-200 text-[11px] font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer">
-                <option selected={adm.role === "Super Admin"}>
-                  Super Admin
-                </option>
-                <option selected={adm.role === "Editor"}>Editor</option>
-                <option selected={adm.role === "Viewer"}>Viewer</option>
+              <select
+                disabled={isSubmitting}
+                defaultValue={adm.role}
+                onChange={(e) => handleRoleChange(adm.id, e.target.value)}
+                className="bg-white border border-slate-200 text-[11px] font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+              >
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
               </select>
               <button className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
                 <Trash2 size={16} />
@@ -53,9 +91,8 @@ const SettingKelolaUser = ({ admins }) => {
       <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl flex gap-3">
         <ShieldAlert className="text-amber-600 shrink-0" size={20} />
         <p className="text-[11px] text-amber-800 leading-relaxed italic">
-          <strong>Informasi Peran:</strong> Peran <b>Super Admin</b> memiliki
-          akses penuh ke sistem. Gunakan peran <b>Editor</b> untuk tim yang
-          hanya bertugas mengelola berita kegiatan.
+          <strong>Informasi Peran:</strong> Peran <b>Admin</b> memiliki akses
+          penuh ke sistem.
         </p>
       </div>
     </div>

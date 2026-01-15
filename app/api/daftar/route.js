@@ -15,6 +15,8 @@ export const POST = async (req) => {
       );
     }
 
+    const lowerEmail = email.toLowerCase();
+
     //     cek email duplikat
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -34,13 +36,37 @@ export const POST = async (req) => {
     //     default avatar
     const defaultAvatar = `https://api.dicebear.com/8.x/initials/svg?seed=${name}`;
 
-    await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        image: defaultAvatar,
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      // Buat User Baru
+      const newUser = await tx.user.create({
+        data: {
+          name,
+          email: lowerEmail,
+          password: hashedPassword,
+          image: defaultAvatar,
+        },
+      });
+
+      // Cek apakah email ini sudah ada di tabel Jabatan (Anggota)
+      const existingAnggota = await tx.jabatan.findUnique({
+        where: { email: lowerEmail },
+      });
+
+      if (existingAnggota) {
+        // Hubungkan Jabatan ke User ID baru
+        await tx.jabatan.update({
+          where: { id: existingAnggota.id },
+          data: {
+            userId: newUser.id,
+          },
+        });
+
+        // Sinkronkan statusUser di tabel User sesuai data Anggota yang diinput Admin
+        await tx.user.update({
+          where: { id: newUser.id },
+          data: { statusUser: existingAnggota.jabatan },
+        });
+      }
     });
 
     return NextResponse.json(
