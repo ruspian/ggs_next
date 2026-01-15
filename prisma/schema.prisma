@@ -168,6 +168,9 @@ model About {
   logo      String?   
   tanggal   DateTime? 
   name      String
+  email     String?
+  telephone String?
+  alamat    String?  @db.Text
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
