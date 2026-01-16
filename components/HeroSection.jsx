@@ -28,9 +28,10 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-2xl text-gray-800"
+          className="text-xl text-gray-800"
         >
-          Tumbuh Bersama Generasi Lestari
+          Pusat aksi dan dokumentasi lingkungan GGS. Mari berkontribusi dan
+          jadilah bagian dari perubahan untuk alam kita.
         </motion.p>
 
         <motion.div
@@ -51,7 +52,7 @@ const HeroSection = () => {
       <div className="md:w-1/2 relative w-full h-100 flex justify-center items-center mt-10 md:mt-0">
         {/* ui card poto */}
         <motion.div
-          className="w-75 md:w-85  bg-white shadow-2xl rounded-sm p-3 absolute top-10 md:top-5 left-10 z-20"
+          className="w-75 md:w-85  bg-white shadow-2xl rounded-sm p-3 absolute top-10 md:top-5 lg:left-30 left-10 z-20"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
@@ -78,7 +79,7 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.div
-          className="w-45 bg-white shadow-2xl rounded-sm p-2 absolute -bottom-8 left-28 md:bottom-5 md:left-5 z-30"
+          className="w-45 bg-white shadow-2xl rounded-sm p-2 absolute -bottom-8 left-28 md:bottom-5 md:left-5 lg:left-26 z-30"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}

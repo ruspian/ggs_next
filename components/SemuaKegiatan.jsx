@@ -3,9 +3,9 @@
 import React from "react";
 import { WorkflowBuilderCard } from "./ui/workflow-builder-card";
 
-const KegiatanComponent = ({ kegiatanData }) => {
+const SemuaKegiatan = ({ kegiatanData }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center justify-center bg-background px-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-10 pt-20 items-center justify-center bg-background p-4">
       {kegiatanData.length > 0 ? (
         kegiatanData.map((kegiatan) => (
           <React.Fragment key={kegiatan.id}>
@@ -21,4 +21,4 @@ const KegiatanComponent = ({ kegiatanData }) => {
   );
 };
 
-export default KegiatanComponent;
+export default SemuaKegiatan;

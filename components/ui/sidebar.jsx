@@ -102,7 +102,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
       >
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="logo" width={32} height={32} />
-          <span className="font-bold text-white tracking-wide">Desa</span>
+          <span className="font-bold text-white tracking-wide">GGS</span>
         </div>
         <Menu
           className="text-slate-300 cursor-pointer"
@@ -170,7 +170,7 @@ export const SidebarLink = ({ className }) => {
           </motion.div>
           {open && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <h1 className="text-white text-lg font-bold">Desa</h1>
+              <h1 className="text-white text-lg font-bold">GGS</h1>
               <p className="text-slate-500 text-xs">Admin Panel</p>
             </motion.div>
           )}

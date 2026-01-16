@@ -8,8 +8,26 @@ import AnggotaComponent from "@/components/AnggotaComponent";
 import ContactComponent from "@/components/ContactComponent";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const aboutData = await prisma.about.findFirst();
+  const kegiatanData = await prisma.kegiatan.findMany({
+    where: { statusPublish: "Published" },
+    orderBy: {
+      date: "desc",
+    },
+    take: 4,
+    include: {
+      _count: {
+        select: {
+          likedBy: true,
+          comments: true,
+        },
+      },
+    },
+  });
+
   return (
     <main className="relative overflow-hidden w-full">
       <BackgroundMotionComponent />
@@ -22,7 +40,7 @@ export default function HomePage() {
       </section>
 
       <section className="py-16">
-        <AboutComponent />
+        <AboutComponent aboutData={aboutData} />
       </section>
 
       <div className="border-t md:mx-20 my-2" />
@@ -39,11 +57,11 @@ export default function HomePage() {
           </p>
         </div>
 
-        <KegiatanComponent />
+        <KegiatanComponent kegiatanData={kegiatanData} />
 
         <div className="flex flex-col items-center justify-center mt-10 px-4">
           <Link
-            href="/anggota"
+            href="/kegiatan"
             className="text-sm text-emerald-600 font-semibold hover:underline"
           >
             {" "}

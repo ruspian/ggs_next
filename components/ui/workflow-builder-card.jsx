@@ -1,25 +1,25 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MoreHorizontal } from "lucide-react";
+import {
+  BubblesIcon,
+  Eye,
+  MessageCircle,
+  MoreHorizontal,
+  ThumbsUp,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { formatDateToDisplayID } from "@/lib/formatTanggal";
+import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
 
-export const WorkflowBuilderCard = ({
-  imageUrl,
-  status,
-  lastUpdated,
-  title,
-  description,
-  tags,
-  users,
-  actions,
-  className,
-}) => {
+export const WorkflowBuilderCard = ({ kegiatan, className }) => {
   const [isHovered, setIsHovered] = React.useState(false);
+
+  const cleanContent = sanitizeHtml(kegiatan?.content);
 
   // Animation variants for the details section
   const detailVariants = {
@@ -44,8 +44,8 @@ export const WorkflowBuilderCard = ({
         {/* Card Image */}
         <div className="relative h-36 w-full">
           <Image
-            src={imageUrl}
-            alt={title}
+            src={kegiatan.image}
+            alt={kegiatan.title}
             className="h-full w-full object-cover"
             fill
           />
@@ -57,21 +57,23 @@ export const WorkflowBuilderCard = ({
           <div className="flex items-start justify-between">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span>{lastUpdated}</span>
+                <span>{formatDateToDisplayID(kegiatan.date)}</span>
                 <span>•</span>
                 <div className="flex items-center gap-1.5">
                   <span
                     className={cn(
                       "h-2 w-2 rounded-full",
-                      status === "Active" ? "bg-green-500" : "bg-red-500"
+                      kegiatan.author === "Admin"
+                        ? "bg-green-500"
+                        : "bg-red-500"
                     )}
-                    aria-label={status}
+                    aria-label={kegiatan.author}
                   />
-                  <span>{status}</span>
+                  <span>{kegiatan.author}</span>
                 </div>
               </div>
               <h3 className="mt-1 text-lg font-semibold text-card-foreground">
-                {title}
+                {kegiatan.title}
               </h3>
             </div>
             <button
@@ -93,13 +95,15 @@ export const WorkflowBuilderCard = ({
                 variants={detailVariants}
                 className="overflow-hidden"
               >
-                <p className="text-sm text-muted-foreground">{description}</p>
+                <div
+                  className="line-clamp-2"
+                  dangerouslySetInnerHTML={{ __html: cleanContent }}
+                ></div>
+                {/* <p className="text-sm text-muted-foreground">
+                  {kegiatan.content}
+                </p> */}
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
+                  <Badge variant="secondary">{kegiatan.kategori}</Badge>
                 </div>
               </motion.div>
             )}
@@ -108,30 +112,19 @@ export const WorkflowBuilderCard = ({
 
         {/* Card Footer */}
         <div className="flex items-center justify-between border-t border-border p-4">
-          <div className="flex -space-x-2">
-            {users.map((user, index) => (
-              <Avatar
-                key={index}
-                className="h-7 w-7 border-2 border-card"
-                aria-label={user.fallback}
-              >
-                <AvatarImage src={user.src} />
-                <AvatarFallback>{user.fallback}</AvatarFallback>
-              </Avatar>
-            ))}
-          </div>
-          <div className="flex items-center -space-x-2">
-            {actions.map(({ Icon, bgColor }, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "flex h-7 w-7 items-center justify-center rounded-full border-2 border-card text-white",
-                  bgColor
-                )}
-              >
-                <Icon size={14} />
-              </div>
-            ))}
+          <div className="flex space-x-2">
+            <p className="flex gap-2 text-sm">
+              <Eye size={20} />
+              {kegiatan?.views || 0}
+            </p>
+            <p className="flex gap-2 text-sm">
+              <ThumbsUp size={18} />
+              {kegiatan?._count?.likedBy}
+            </p>
+            <p className="flex gap-2 text-sm">
+              <MessageCircle size={17} />
+              {kegiatan?._count?.comments}
+            </p>
           </div>
         </div>
       </Card>

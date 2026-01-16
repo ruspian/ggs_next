@@ -37,7 +37,7 @@ export const AnimatedTooltip = ({ items, className }) => {
       {items.map((item) => (
         <div
           className="-mr-4 relative group"
-          key={item.name}
+          key={item.nama}
           onMouseEnter={() => setHoveredIndex(item.id)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -66,10 +66,10 @@ export const AnimatedTooltip = ({ items, className }) => {
                 <div className="absolute inset-x-10 z-30 w-[20%] -bottom-px bg-linear-to-r from-transparent via-emerald-500 to-transparent h-px" />
                 <div className="absolute left-10 w-[40%] z-30 -bottom-px bg-linear-to-r from-transparent via-sky-500 to-transparent h-px" />
                 <div className="font-bold text-background relative z-30 text-base">
-                  {item.name}
+                  {item.nama}
                 </div>
                 <div className="text-muted-foreground text-xs">
-                  {item.designation}
+                  {item.jabatan}
                 </div>
               </motion.div>
             )}
@@ -78,9 +78,10 @@ export const AnimatedTooltip = ({ items, className }) => {
             onMouseMove={handleMouseMove}
             height={400}
             width={400}
-            src={item.image}
-            alt={item.name}
-            className="object-cover m-0 p-0 object-top rounded-full h-15 w-15 md:h-30 md:w-30 border-2 group-hover:scale-105 group-hover:z-30 border-background relative transition duration-500"
+            src={item?.image}
+            alt={item.nama}
+            unoptimized
+            className="object-cover m-0 p-0 object-top rounded-full w-16 h-16 md:w-32 md:h-32 border-2 group-hover:scale-105 group-hover:z-30 border-background relative transition duration-500"
           />
         </div>
       ))}
