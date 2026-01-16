@@ -460,7 +460,8 @@ const SettingProfilOrganisasi = ({ profil }) => {
           </div>
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-900/20 active:scale-95 mt-4"
+            disabled={isSubmitting}
+            className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-900/20 active:scale-95 mt-4 disabled:bg-emerald-600/50 disabled:cursor-not-allowed"
           >
             <Save size={18} /> Simpan
           </button>
