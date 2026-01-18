@@ -19,6 +19,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DeleteAnggota } from "@/lib/action";
 import { useToaster } from "@/providers/ToastProvider";
 import ConfirmModal from "./ConfirmModal";
+import Pagination from "./Pagination";
 
 const AnggotaAdminClient = ({ members, pagination }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -132,7 +133,7 @@ const AnggotaAdminClient = ({ members, pagination }) => {
         </button>
       </div>
 
-      {/* Filter & Search Bar */}
+      {/* bar pencarian */}
       <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           {isPending ? (
@@ -160,7 +161,7 @@ const AnggotaAdminClient = ({ members, pagination }) => {
         </button>
       </div>
 
-      {/* Table Section */}
+      {/* tabel */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -218,7 +219,7 @@ const AnggotaAdminClient = ({ members, pagination }) => {
                         "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
                         member.status === "Aktif"
                           ? "bg-emerald-100 text-emerald-700"
-                          : "bg-slate-100 text-slate-500"
+                          : "bg-slate-100 text-slate-500",
                       )}
                     >
                       {member.status}
@@ -258,31 +259,11 @@ const AnggotaAdminClient = ({ members, pagination }) => {
           message="Anggota yang dihapus tidak dapat dikembalikan lagi. Pastikan data sudah benar."
         />
 
-        {/* Pagination Dummy */}
-        <div className="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
-          <p className="text-xs text-slate-500">
-            Total {pagination.totalItems} anggota
-          </p>
-          <div className="flex gap-2">
-            <button
-              className="px-3 py-1 border border-slate-200 rounded bg-white text-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              disabled={pagination.currentPage === 1 || isPending}
-              onClick={() => handlePageChange(pagination.currentPage - 1)}
-            >
-              Sebelumnya
-            </button>
-            <button
-              disabled={
-                Number(pagination.currentPage) ===
-                  Number(pagination.totalPages) || isPending
-              }
-              onClick={() => handlePageChange(pagination.currentPage + 1)}
-              className="px-3 py-1 border border-slate-200 rounded bg-white text-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              Selanjutnya
-            </button>
-          </div>
-        </div>
+        <Pagination
+          pagination={pagination}
+          handlePageChange={handlePageChange}
+          isPending={isPending}
+        />
       </div>
     </div>
   );

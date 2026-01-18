@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { formatDateToDisplayID } from "@/lib/formatTanggal";
 import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
+import Link from "next/link";
 
 export const WorkflowBuilderCard = ({ kegiatan, className }) => {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -65,16 +66,18 @@ export const WorkflowBuilderCard = ({ kegiatan, className }) => {
                       "h-2 w-2 rounded-full",
                       kegiatan.author === "Admin"
                         ? "bg-green-500"
-                        : "bg-red-500"
+                        : "bg-red-500",
                     )}
                     aria-label={kegiatan.author}
                   />
                   <span>{kegiatan.author}</span>
                 </div>
               </div>
-              <h3 className="mt-1 text-lg font-semibold text-card-foreground">
-                {kegiatan.title}
-              </h3>
+              <Link href={`/kegiatan/${kegiatan.id}`}>
+                <h3 className="mt-1 text-lg font-semibold text-card-foreground">
+                  {kegiatan.title}
+                </h3>
+              </Link>
             </div>
             <button
               aria-label="More options"

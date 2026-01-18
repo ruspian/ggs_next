@@ -1,22 +1,33 @@
 import React from "react";
 import SemuaKegiatan from "@/components/SemuaKegiatan";
 
-const KegiatanPage = async () => {
-  const kegiatanData = await prisma.kegiatan.findMany({
-    where: { statusPublish: "Published" },
-    orderBy: {
-      date: "desc",
-    },
-    take: 4,
-    include: {
-      _count: {
-        select: {
-          likedBy: true,
-          comments: true,
+const KegiatanPage = async (searchParams) => {
+  const params = await searchParams;
+
+  const page = Math.max(1, parseInt(params?.page) || "1");
+  const limit = 8;
+
+  const [kegiatanData, totalCount] = await prisma.$transaction([
+    prisma.kegiatan.findMany({
+      where: { statusPublish: "Published" },
+      orderBy: {
+        date: "desc",
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        _count: {
+          select: {
+            likedBy: true,
+            comments: true,
+          },
         },
       },
-    },
-  });
+    }),
+    prisma.kegiatan.count(),
+  ]);
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <div className="min-h-screen">
@@ -32,7 +43,10 @@ const KegiatanPage = async () => {
         </div>
       </div>
 
-      <SemuaKegiatan kegiatanData={kegiatanData} />
+      <SemuaKegiatan
+        kegiatanData={kegiatanData}
+        pagination={{ totalItems: totalCount, currentPage: page, totalPages }}
+      />
     </div>
   );
 };

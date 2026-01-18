@@ -56,7 +56,6 @@ export default async function HomePage() {
             masyarakat dan lingkungan sekitar.
           </p>
         </div>
-
         <KegiatanComponent kegiatanData={kegiatanData} />
 
         <div className="flex flex-col items-center justify-center mt-10 px-4">
