@@ -122,7 +122,7 @@ export const WorkflowBuilderCard = ({ kegiatan, className }) => {
             </p>
             <p className="flex gap-2 text-sm">
               <ThumbsUp size={18} />
-              {kegiatan?._count?.likedBy}
+              {kegiatan?._count?.likes}
             </p>
             <p className="flex gap-2 text-sm">
               <MessageCircle size={17} />

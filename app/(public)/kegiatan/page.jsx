@@ -18,7 +18,7 @@ const KegiatanPage = async (searchParams) => {
       include: {
         _count: {
           select: {
-            likedBy: true,
+            likes: true,
             comments: true,
           },
         },

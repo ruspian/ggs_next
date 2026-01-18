@@ -85,12 +85,8 @@ model User {
   
   job               String?
 
-  
-
+  likes         Like[]
   comments          Comment[]
-
-  likedKegiatan    Kegiatan[] @relation("UserLikes")
-  dislikedKegiatan Kegiatan[] @relation("UserDislikes")
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -139,17 +135,29 @@ model Kegiatan {
   author      String?
   statusPublish      StatusPost @default(Draft)
 
-  likedBy     User[]   @relation("UserLikes")
-  dislikedBy  User[]   @relation("UserDislikes")
   views       Int       @default(0)
   viewLogs       PostView[]
 
+  likes       Like[]
   comments    Comment[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("kegiatan") 
+}
+
+model Like {
+  id         String   @id @default(cuid())
+  userId     String
+  kegiatanId String
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kegiatan   Kegiatan @relation(fields: [kegiatanId], references: [id], onDelete: Cascade)
+
+  //  1 user hanya bisa 1x like di 1 kegiatan
+  @@unique([userId, kegiatanId])
 }
 
 model PostView {

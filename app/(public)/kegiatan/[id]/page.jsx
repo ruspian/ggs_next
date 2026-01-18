@@ -1,20 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import {
-  Eye,
-  Heart,
-  MessageCircle,
-  Calendar,
-  MapPin,
-  ArrowLeft,
-  Share2,
-} from "lucide-react";
+import { Calendar, MapPin, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
 import { auth } from "@/lib/auth";
 import { UpdateViews } from "@/lib/action";
 import CommentForm from "@/components/CommentForm";
+import StatistikKegiatan from "@/components/StatistikKegiatan";
 
 export default async function DetailKegiatanPage({ params }) {
   const { id } = await params;
@@ -27,7 +20,7 @@ export default async function DetailKegiatanPage({ params }) {
     include: {
       _count: {
         select: {
-          likedBy: true,
+          likes: true,
           comments: true,
         },
       },
@@ -36,6 +29,7 @@ export default async function DetailKegiatanPage({ params }) {
           user: true,
         },
       },
+      likes: true,
     },
   });
 
@@ -45,6 +39,7 @@ export default async function DetailKegiatanPage({ params }) {
   }
 
   const cleanContent = sanitizeHtml(kegiatan?.content);
+  const isLikedInitial = kegiatan?.likes.length > 0;
 
   if (!kegiatan) return notFound();
 
@@ -90,30 +85,6 @@ export default async function DetailKegiatanPage({ params }) {
         </div>
       </section>
 
-      {/* statistik dan bagikan */}
-      <section className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-6 text-slate-600">
-            <div className="flex items-center gap-1.5 font-bold">
-              <Eye size={20} className="text-blue-500" />
-              <span>{kegiatan.views || 0}</span>
-            </div>
-            <button className="flex items-center gap-1.5 font-bold hover:text-rose-500 transition-colors">
-              <Heart size={20} className="text-rose-500" />
-              <span>{kegiatan._count.likedBy}</span>
-            </button>
-            <div className="flex items-center gap-1.5 font-bold">
-              <MessageCircle size={20} className="text-emerald-500" />
-              <span>{kegiatan._count.comments}</span>
-            </div>
-          </div>
-
-          <button className="flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all">
-            <Share2 size={18} /> Bagikan
-          </button>
-        </div>
-      </section>
-
       {/* konten artikel */}
       <article className="max-w-4xl mx-auto px-6 py-12">
         <div className="flex items-center gap-4 mb-10 pb-10 border-b border-slate-100">
@@ -137,12 +108,17 @@ export default async function DetailKegiatanPage({ params }) {
         </div>
 
         <div className="prose prose-lg prose-emerald max-w-none text-slate-700 leading-relaxed font-medium">
-          <div
-            className=""
-            dangerouslySetInnerHTML={{ __html: cleanContent }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: cleanContent }} />
         </div>
       </article>
+
+      {/* statistik dan bagikan */}
+      <section className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <StatistikKegiatan
+          kegiatan={kegiatan}
+          isLikedInitial={isLikedInitial}
+        />
+      </section>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         {session ? (
