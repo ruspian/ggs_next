@@ -21,7 +21,7 @@ export default async function HomePage() {
     include: {
       _count: {
         select: {
-          likedBy: true,
+          likes: true,
           comments: true,
         },
       },
