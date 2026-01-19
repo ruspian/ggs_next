@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import RoleProgress from "@/components/RoleProgres";
 
+export const dynamic = "force-dynamic";
+
 async function getDashboardData() {
   // Ambil Statistik Utama secara paralel
   const [
@@ -143,7 +145,7 @@ export default async function AdminDashboardPage() {
                             "text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-tighter",
                             row.statusPublish === "Published"
                               ? "bg-emerald-100 text-emerald-700"
-                              : "bg-slate-100 text-slate-500"
+                              : "bg-slate-100 text-slate-500",
                           )}
                         >
                           {row.statusPublish}

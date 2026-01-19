@@ -1,9 +1,17 @@
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import AnggotaAdminClient from "@/components/AnggotaAdminClient";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export default async function AnggotaAdminPage({ searchParams }) {
+  const session = await auth();
+
+  if (!session?.user || session.user.role !== "Admin") {
+    redirect("/");
+  }
   const params = await searchParams;
 
   // inisialisasi search query
