@@ -1,7 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { Calendar, MapPin, ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sanitizeHtml } from "@/lib/protectDangerouslySetInnerHTML";
 import { auth } from "@/lib/auth";

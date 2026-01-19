@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { prisma } from "@/lib/prisma";
 

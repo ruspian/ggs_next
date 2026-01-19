@@ -1,4 +1,5 @@
-// import PatnershipComponent from "@/components/PatnershipComponent";
+export const dynamic = "force-dynamic";
+
 import AboutComponent from "@/components/AboutComponent";
 import KegiatanComponent from "@/components/KegiatanComponent";
 import BackgroundMotionComponent from "@/components/BackgroundMotionComponent";
