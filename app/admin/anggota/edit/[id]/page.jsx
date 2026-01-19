@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import EditAnggotaClient from "@/components/EditAnggotaClient";
+import { prisma } from "@/lib/prisma";
 import React from "react";
 
 const EditAnggotaPage = async ({ params }) => {
