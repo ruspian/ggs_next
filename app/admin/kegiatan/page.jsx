@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import KegiatanAdminClient from "@/components/KegiatanAdminClient";
 import { formatDateToDisplayID } from "@/lib/formatTanggal";
 import { prisma } from "@/lib/prisma";

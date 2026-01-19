@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import EditAnggotaClient from "@/components/EditAnggotaClient";
 import React from "react";
 
