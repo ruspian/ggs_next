@@ -205,9 +205,6 @@ const AnggotaAdminClient = ({ members, pagination }) => {
                       <div className="flex items-center gap-2 text-sm text-slate-500">
                         <Mail size={14} /> {member.email}
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
-                        <MapPin size={14} /> {member.address}
-                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-slate-600">

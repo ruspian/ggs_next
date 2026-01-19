@@ -15,7 +15,7 @@ export const AnimatedTestimonials = ({
   // Inisialisasi rotations langsung dengan pengecekan window.
   // untuk menghindari error 'purity' dan 'cascading renders'.
   const [rotations] = useState(() =>
-    testimonials.map(() => Math.floor(Math.random() * 21) - 10)
+    testimonials.map(() => Math.floor(Math.random() * 21) - 10),
   );
 
   // Gunakan satu state 'mounted' untuk sinkronisasi Hydration.
@@ -53,7 +53,7 @@ export const AnimatedTestimonials = ({
     <div
       className={cn(
         "max-w-sm md:max-w-4xl mx-auto px-4 md:px-8 lg:px-12 py-40",
-        className
+        className,
       )}
     >
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-20">
@@ -114,9 +114,13 @@ export const AnimatedTestimonials = ({
               {testimonials[active].name}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {testimonials[active].designation}
+              {testimonials[active].email}
             </p>
+
             <motion.p className="text-lg text-muted-foreground mt-8">
+              <motion.p className="text-center mb-2 text-sm max-w-30  bg-zinc-100 rounded-3xl text-emerald-700">
+                {testimonials[active].designation}
+              </motion.p>
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}

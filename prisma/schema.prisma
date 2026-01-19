@@ -37,7 +37,7 @@ model Jabatan {
   email     String   @unique
   phone     String?
   jenisKelamin JenisKelamin @map("jenis_kelamin")
-  alamat    String?
+  deskripsi    String?  @db.Text
   image      String?
   jabatan   MemberStatus @default(Anggota)
   tanggalBergabung DateTime?

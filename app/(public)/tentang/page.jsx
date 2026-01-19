@@ -1,7 +1,9 @@
 import React from "react";
 import { Target, TreePine } from "lucide-react";
 
-const AboutPage = () => {
+const AboutPage = async () => {
+  const aboutData = await prisma.about.findFirst();
+
   return (
     <div className="min-h-screen bg-slate-50">
       <section className="pt-30 px-6 text-center text-emerald-500 ">
@@ -27,9 +29,7 @@ const AboutPage = () => {
               <h2 className="text-2xl font-bold text-slate-800">Visi Kami</h2>
             </div>
             <p className="text-lg text-slate-600 leading-relaxed italic">
-              &quot;Menjadi pusat inspirasi dan edukasi lingkungan yang
-              melahirkan pemimpin masa depan peduli ekologi di tanah
-              Gorontalo.&quot;
+              &quot;{aboutData?.visi}.&quot;
             </p>
           </div>
 
@@ -42,12 +42,7 @@ const AboutPage = () => {
               <h2 className="text-2xl font-bold">Misi Kami</h2>
             </div>
             <ul className="space-y-4">
-              {[
-                "Menyelenggarakan program sekolah hijau berbasis kearifan lokal.",
-                "Memulihkan ekosistem kritis di wilayah pesisir dan hutan Gorontalo.",
-                "Mendorong gaya hidup nol sampah (zero waste) di masyarakat.",
-                "Membangun jejaring kolaborasi dengan komunitas lokal dan global.",
-              ].map((misi, index) => (
+              {aboutData?.misi.map((misi, index) => (
                 <li
                   key={index}
                   className="flex gap-3 items-start text-green-100"

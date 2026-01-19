@@ -31,7 +31,7 @@ const TambahAnggotaClient = () => {
     email: "",
     phone: "",
     jenisKelamin: "",
-    alamat: "",
+    deskripsi: "",
     image: "",
     jabatan: "",
     tanggalBergabung: "",
@@ -291,7 +291,7 @@ const TambahAnggotaClient = () => {
 
               <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-bold text-slate-700">
-                  Alamat Lengkap
+                  Deskripsi
                 </label>
                 <div className="relative">
                   <MapPin
@@ -299,9 +299,9 @@ const TambahAnggotaClient = () => {
                     size={16}
                   />
                   <textarea
-                    value={formData.alamat}
+                    value={formData.deskripsi}
                     onChange={(e) =>
-                      handleInputChange("alamat", e.target.value)
+                      handleInputChange("deskripsi", e.target.value)
                     }
                     rows="2"
                     placeholder="Jl. Merdeka No. 1, Kel. ..., Kec. ..."

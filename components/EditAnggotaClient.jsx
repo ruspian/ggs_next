@@ -14,6 +14,7 @@ import {
   ImageIcon,
   Loader2,
   Trash2,
+  Info,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -32,7 +33,7 @@ const EditAnggotaClient = ({ anggota }) => {
     email: anggota?.email,
     phone: anggota?.phone,
     jenisKelamin: anggota?.jenisKelamin,
-    alamat: anggota?.alamat,
+    deskripsi: anggota?.deskripsi,
     image: anggota?.image,
     jabatan: anggota?.jabatan,
     tanggalBergabung: formatTanggalEditInput(anggota?.tanggalBergabung),
@@ -187,7 +188,7 @@ const EditAnggotaClient = ({ anggota }) => {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Tambah Anggota
+              Edit Anggota
             </h1>
             <p className="text-slate-500 text-sm font-medium">
               Lengkapi formulir untuk mendaftarkan anggota baru.
@@ -284,20 +285,20 @@ const EditAnggotaClient = ({ anggota }) => {
 
               <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-bold text-slate-700">
-                  Alamat Lengkap
+                  Deskripsi
                 </label>
                 <div className="relative">
-                  <MapPin
+                  <Info
                     className="absolute left-3 top-3 text-slate-400"
                     size={16}
                   />
                   <textarea
-                    value={formData.alamat}
+                    value={formData?.deskripsi}
                     onChange={(e) =>
-                      handleInputChange("alamat", e.target.value)
+                      handleInputChange("deskripsi", e.target.value)
                     }
                     rows="2"
-                    placeholder="Jl. Merdeka No. 1, Kel. ..., Kec. ..."
+                    placeholder="Tentang anggota..."
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none"
                   />
                 </div>

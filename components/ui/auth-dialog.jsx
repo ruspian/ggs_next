@@ -17,13 +17,13 @@ import { useRouter } from "next/navigation";
 import { useToaster } from "@/providers/ToastProvider";
 import { signIn } from "next-auth/react";
 
-export default function AuthDialog({ tampilan, text = "Daftar!" }) {
+export default function AuthDialog({ tampilan, text = "Masuk!" }) {
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
     password: "",
   });
-  const [mode, setMode] = useState("signup");
+  const [mode, setMode] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

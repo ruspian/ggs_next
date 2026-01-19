@@ -13,7 +13,7 @@ import { formatDateToDisplayID } from "@/lib/formatTanggal";
 export default async function DetailKegiatanPage({ params }) {
   const { id } = await params;
   const session = await auth();
-  const userId = session.user.id;
+  const userId = session?.user?.id;
 
   // Mengambil data kegiatan lengkap dengan count likes & comments
   const kegiatan = await prisma.kegiatan.findUnique({
@@ -52,7 +52,7 @@ export default async function DetailKegiatanPage({ params }) {
       <article className="p-8 md:p-16 space-y-8">
         {/* Header  */}
         <div className="space-y-4 text-center max-w-3xl mx-auto mt-10">
-          <span className="px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-widest">
+          <span className="px-4 py-1.5  bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-widest">
             {kegiatan.kategori}
           </span>
           <h1 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
@@ -128,12 +128,9 @@ export default async function DetailKegiatanPage({ params }) {
           <div className="bg-slate-50 p-6 rounded-2xl border border-dashed border-slate-200 text-center mb-12">
             <p className="text-sm text-slate-500 font-medium">
               Silakan{" "}
-              <Link
-                href="/login"
-                className="text-emerald-600 font-bold hover:underline"
-              >
+              <span className="text-emerald-600 font-bold hover:underline">
                 Login
-              </Link>{" "}
+              </span>{" "}
               untuk ikut berdiskusi.
             </p>
           </div>
