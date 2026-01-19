@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import SemuaKegiatan from "@/components/SemuaKegiatan";
+import { prisma } from "@/lib/prisma";
 
 const KegiatanPage = async (searchParams) => {
   const params = await searchParams;

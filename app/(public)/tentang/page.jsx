@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import { Target, TreePine } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
 const AboutPage = async () => {
   const aboutData = await prisma.about.findFirst();
