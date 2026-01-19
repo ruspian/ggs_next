@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["jsdom"],
   images: {
     remotePatterns: [
       {
@@ -43,6 +42,31 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  serverExternalPackages: ["isomorphic-dompurify"],
+
+  // Jika pakai Turbopack, kita buat alias palsu untuk jsdom
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        jsdom: false,
+        "html-encoding-sniffer": false,
+        canvas: false,
+      },
+    },
+  },
+
+  // Fallback jika Vercel tidak pakai Turbo
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        jsdom: false,
+        "html-encoding-sniffer": false,
+        canvas: false,
+      };
+    }
+    return config;
   },
 };
 
