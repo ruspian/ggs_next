@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-export default middleware((req) => {
+export default auth((req) => {
   // Ambil data session/token langsung dari req.auth
   const session = req.auth;
   const { nextUrl } = req;
