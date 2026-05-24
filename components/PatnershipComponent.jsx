@@ -6,55 +6,55 @@ import Image from "next/image";
 
 const PatnershipComponent = () => {
   return (
-    <div className=" h-32 md:h-20 w-full relative flex items-center justify-center">
-      <div className="bg-white md:w-[80%] md:p-2 p-4 w-auto md:absolute md:-translate-y-4 rounded-md shadow-md">
-        {/* judul */}
-        <p className="text-lg font-bold text-center text-emerald-700">
-          Patnership
+    <div className="w-full relative flex items-center justify-center z-20 px-4 md:px-0">
+      <div className="bg-white w-full md:w-[85%] lg:max-w-5xl p-6 md:p-8 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 -mt-6 md:-mt-12">
+        <p className="text-lg md:text-xl font-bold text-center text-emerald-700 uppercase tracking-widest">
+          Partnership
         </p>
-        <hr className="text-emerald-700 w-full mt-3" />
 
-        {/* content */}
+        <div className="w-20 md:w-24 h-1 bg-emerald-600 mx-auto mt-3 rounded-full" />
+
         <motion.div
-          className="flex items-center sm:my-10 md:my-4 justify-center md:gap-30 gap-4 mt-4 flex-wrap"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          className="flex flex-nowrap items-center justify-start md:justify-center gap-6 sm:gap-10 md:gap-16 lg:gap-20 mt-8 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
           <Image
             src="/madrasah.png"
             alt="logo madrasah salafiyah syafiiyah"
-            className="mx-2 grayscale hover:grayscale-0"
-            width={50}
-            height={50}
+            className="w-12 sm:w-14 md:w-16 h-auto shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+            width={64}
+            height={64}
           />
           <Image
             src="/salafiyah.png"
             alt="logo pondok pesantren salafiyah syafiiyah"
-            className="mx-2 grayscale hover:grayscale-0"
-            width={60}
-            height={60}
+            className="w-14 sm:w-16 md:w-18 h-auto shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+            width={72}
+            height={72}
           />
           <Image
             src="/burungIndonesia.png"
             alt="logo burung indonesia"
-            className="mx-2 grayscale hover:grayscale-0"
-            width={60}
-            height={60}
+            className="w-14 sm:w-16 md:w-18 h-auto shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+            width={72}
+            height={72}
           />
           <Image
             src="/bekalPemimpin.png"
             alt="logo bekal pemimpin"
-            className="mx-2 grayscale hover:grayscale-0"
-            width={60}
-            height={60}
+            className="w-14 sm:w-16 md:w-18 h-auto shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+            width={72}
+            height={72}
           />
           <Image
             src="/dlh.png"
             alt="logo dlh"
-            className="mx-2 grayscale hover:grayscale-0"
-            width={60}
-            height={60}
+            className="w-14 sm:w-16 md:w-18 h-auto shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+            width={72}
+            height={72}
           />
         </motion.div>
       </div>
